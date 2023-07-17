@@ -1,0 +1,42 @@
+﻿@model SocTube.Core.ViewModels.UserViewModel
+
+<div class="row mt-5 ">
+    <div class="col-md-3">
+        <ul class="nav flex-column border-top border-left border-dark">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#preview">Podgląd</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#settings">Ustawienia</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#links">Linki</a>
+            </li>
+            <li class="nav-item">
+                <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <a class="nav-link" href="javascript:;" onclick="parentNode.submit();">
+                        <span>Logout</span>
+                    </a>
+                </form>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-9">
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="preview">
+                @if (Model != null)
+                {
+                    @await Html.PartialAsync("_Preview", Model.UserProfile)
+                }else
+                    @await Html.PartialAsync("_UserData", Model.UserProfile.SocialMedia)
+
+            </div>
+            <div class="tab-pane fade" id="settings">
+                @await Html.PartialAsync("_UserData", Model.UserProfile)
+            </div>
+            <div class="tab-pane fade" id="links">
+                    @await Html.PartialAsync("_UserLinks", Model)
+                </div>
+        </div>
+    </div>
+</div>

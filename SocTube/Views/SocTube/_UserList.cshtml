@@ -1,0 +1,78 @@
+﻿@model UsersViewModel
+
+
+@if (Model != null && Model.UserProfiles.Any())
+{
+    <div class="border d-flex justify-content-center text-center bg-dark text-light">
+        <p>
+            SocTube<br class="mb-2" /> <b>Portal w którym możesz udostępniać swoje linki do stron, blogów oraz róznych social medii.</b>
+        </p>
+
+    </div>
+    <div class="table-responsive mt-5 d-flex justify-content-center">
+        <table class="table align-middle table-hover table-sm table-borderless table-bordered col-6">
+            <tbody>
+                @foreach (var (userProfile, index) in Model.UserProfiles.Select((profile, index) => (profile, index)))
+                {
+                    <tr onclick="window.location.href = '@Url.Action("UserPage", "SocTube", new { userId = userProfile.UserId })'" style="cursor: pointer;" class="border-bottom">
+                        <td class="text-center" style="vertical-align: middle; font-size: 20px;">
+                            <strong>@(index + 1).</strong>
+                        </td>
+                        <td class="text-center">
+                            @if (userProfile.ProfileImage != null)
+                            {
+                                <img src="data:image/png;base64,@Convert.ToBase64String(userProfile.ProfileImage)" alt="Profile Image" class="img-thumbnail rounded-circle" width="100" height="auto" />
+                            }
+                        </td>
+                        <td>
+                            <div class="flex-sm-row text-left">
+                                <div class="col-12">
+                                    <h5><strong>@userProfile.UserName</strong></h5>
+
+                                        <p>
+                                        @if (userProfile.ContactEmail != null)
+                                        {
+                                            <strong>Email Kontaktowy:</strong> @userProfile.ContactEmail
+                                        }
+                                        </p>
+                                        @if (userProfile.Description != null)
+                                        {
+                                            <span>@userProfile.Description</span>
+                                        }
+                                </div>
+                                <div class="col-12 mt-2 mb-2">
+                                    @if (Model.UserSocialMedia != null)
+                                    {
+                                        @foreach (var item in Model.UserSocialMedia)
+                                        {
+                                            if (item.UserId == userProfile.UserId)
+                                            {
+                                                var items = item.GetType().GetProperties();
+                                                foreach (var s in items)
+                                                {
+                                                    var c = s.GetValue(item);
+                                                    if (c != null && !string.IsNullOrEmpty(s.ToString()) && !s.Name.ToString().Contains("Id") && !s.Name.ToString().Contains("Profile"))
+                                                    {
+                                                        var iconName = s.Name + ".png";
+                                                        var iconUrl = c.ToString();
+                                                        <a class="mr-1" href="@iconUrl" target="_blank">
+                                                            <img src="~/content/image/@iconName" width="20" height="20" />
+                                                        </a>
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p>No user profiles available.</p>
+}

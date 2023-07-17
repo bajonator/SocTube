@@ -1,0 +1,34 @@
+﻿@model SocTube.Core.ViewModels.UserViewModel
+
+
+
+@using (Html.BeginForm("SaveLink", "SocTube", FormMethod.Post))
+{
+@*    @Html.AntiForgeryToken();
+    @Html.HiddenFor(x => x.UserProfile.Id)
+
+
+    <div class="row text-right justify-content-center">
+        <div class="form-group mt-3 col-md-3">
+            @Html.LabelFor(x => x.UserLinks.UserName)
+        </div>
+        <div class="form-group mt-3 col-md-5">
+            @Html.TextBoxFor(x => x.UserLinks.Name, new { @class = "form-control bg-dark text-white", autofocus = "autofocus" })
+            @Html.ValidationMessageFor(x => x.UserLinks.Name)
+        </div>
+    </div>
+    <div class="row text-right justify-content-center">
+        <div class="form-group mt-3 col-md-3">
+            @Html.LabelFor(x => x.UserLinks.Url)
+        </div>
+        <div class="form-group mt-3 col-md-5">
+            @Html.TextBoxFor(x => x.UserLinks.Url, new { @class = "form-control bg-dark text-white", autofocus = "autofocus" })
+            @Html.ValidationMessageFor(x => x.UserLinks.Url)
+        </div>
+    </div>
+    <div class="d-flex flex-column text-center justify-content-center align-items-center">
+        <button class="btn btn-primary btn-sm" type="submit">
+            Zapisz
+        </button>
+    </div>*@
+}

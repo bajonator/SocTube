@@ -1,0 +1,65 @@
+﻿@model SocTube.Core.ViewModels.UserViewModel
+
+<div class="container text-center">
+    <div>
+        @if (Model.UserProfile.ProfileImage != null)
+        {
+            <img src="data:image;base64,@Convert.ToBase64String(Model.UserProfile.ProfileImage)" class="img-thumbnail rounded-circle" width="150" height="auto">
+        }
+    </div>
+</div>
+<div class="text-center mt-5">
+    <div class="row justify-content-center rounded">
+        <div class="col-6">
+            <div class="p-3 rounded-end">
+                <p><strong>Email Kontaktowy:</strong> @Model.UserProfile.ContactEmail</p>
+            </div>
+        </div>
+    </div>
+    <div class="p-3 bg-opacity-30 rounded">
+        <h4>Opis:</h4>
+        <strong>@Model.UserProfile.Description</strong>
+    </div>
+    <div class="row text-center justify-content-center mt-5">
+        <div class="form-group col-md-3">
+            <h5>Linki Social Mediów</h5>
+            <div class="text-center justify-content-center">
+                @foreach (var item in Model.UserProfile.SocialMedia)
+                {
+                    if (item.UserId == Model.UserProfile.UserId)
+                    {
+                        var items = item.GetType().GetProperties();
+                        foreach (var s in items)
+                        {
+                            var c = s.GetValue(item);
+                            if (c != null && !string.IsNullOrEmpty(s.ToString()) && !s.Name.ToString().Contains("Id") && !s.Name.ToString().Contains("Profile"))
+                            {
+                                var iconName = s.Name + ".png";
+                                var iconUrl = c.ToString();
+                                <a class="mr-1" href="@iconUrl" target="_blank">
+                                    <img src="~/content/image/@iconName" width="20" height="20" />
+                                </a>
+                            }
+                        }
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="mt-5">
+    @if (Model.UserProfile.Links != null)
+        {
+@*            var userLinks = Model.UserLinks.GetType().GetProperties();
+            var name = userLinks[1].GetValue(Model.UserLinks, null);
+            var url = userLinks[2].GetValue(Model.UserLinks, null);
+            var escapedUrl = Uri.EscapeUriString(url.ToString());
+
+            <button type="button" onclick="window.open('@escapedUrl', '_blank')">
+                @name
+            </button>*@
+        }
+    </div>
+
+
+@*<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>*@
