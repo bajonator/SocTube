@@ -62,11 +62,14 @@ namespace SocTube.Controllers
             var userInput = new UserViewModel
             {
                 UserProfile = _profilesRepository.GetUser(userId),
-                UserLinks = _profilesRepository.GetLinks(userId),
                 UserSocialMedia = _profilesRepository.GetSocialMedia(userId),
-                //UserSettings = _profilesRepository.GetSettings(),
+                UserLinks = new Link()
             };
-            userInput.UserProfile.SocialMedia = _profilesRepository.GetListMedia(userId);
+            if (userInput.UserProfile != null)
+                userInput.UserProfile.SocialMedia = _profilesRepository.GetListMedia(userId);
+            if (userInput.UserProfile != null)
+                userInput.UserProfile.Links = _profilesRepository.GetLinks(userId);
+
             return View(userInput);
         }
         public IActionResult UserLinks()
@@ -92,15 +95,16 @@ namespace SocTube.Controllers
             var userInput = new UserViewModel
             {
                 UserProfile = _profilesRepository.GetUserProfiles(userId),
-                UserLinks = _profilesRepository.GetLinks(userId),
+                UserLinks = userLink,
                 UserSocialMedia = _profilesRepository.GetSocialMedia(userId)
             };
             userInput.UserProfile.SocialMedia = _profilesRepository.GetListMedia(userId);
+            userInput.UserProfile.Links = _profilesRepository.GetLinks(userId);
 
             return View(userInput);
         }
         [HttpPost]
-        public IActionResult SaveUser(Profile model, SocialMedia socialMedia, IFormFile profilePicture)
+        public IActionResult SaveUser(Profile model, IFormFile profilePicture)
         {
             var userId = User.GetUserId();
 
@@ -118,9 +122,29 @@ namespace SocTube.Controllers
                     Description = model.Description,
                     ProfileImage = model.ProfileImage,
                 };
+
+                if (model.Id > 0)
+                    _profilesRepository.Update(userProfile);
+                else
+                    _profilesRepository.Add(userProfile);
+
+                return RedirectToAction("UserInput");
+            }
+
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult SaveMedia(SocialMedia socialMedia)
+        {
+            var userId = User.GetUserId();
+            var profile = _profilesRepository.GetUser(userId);
+
+            ModelState.Remove("Profile.Id");
+            if (ModelState.IsValid)
+            {
+
                 var userSocialMedia = new SocialMedia
                 {
-                    Id = socialMedia.Id,
                     UserId = userId,
                     YouTube = socialMedia.YouTube,
                     Instagram = socialMedia.Instagram,
@@ -129,55 +153,96 @@ namespace SocTube.Controllers
                     Twitch = socialMedia.Twitter,
                     Twitter = socialMedia.Twitter,
                     Github = socialMedia.Github,
-                };        
+                };
 
-                if (model.Id > 0)
-                    _profilesRepository.Update(userProfile);
-                else
-                    _profilesRepository.Add(userProfile);
-
-                if (socialMedia.Id > 0)
-                    _profilesRepository.UpdateSocial(userSocialMedia, userProfile.Id);
+                if (profile.Id > 0)
+                    _profilesRepository.UpdateSocial(userSocialMedia, profile.Id);
                 else
                     _profilesRepository.AddSocial(userSocialMedia);
-                
 
-                return RedirectToAction("Users");
+
+                return RedirectToAction("UserInput");
             }
 
-            return View(model);
+            return View(socialMedia);
         }
-
         [HttpPost]
-        public IActionResult SaveLink(UserInputViewModel model)
+        public IActionResult SaveLink(Link model)
         {
-            var userId = User.GetUserId();
+            model.UserId = User.GetUserId();
 
-            ModelState.Remove("UserLinks.Id");
+            ModelState.Remove("Id");
 
             if (!ModelState.IsValid)
             {
-                var vm = new UserInputViewModel
+                var vm = new Link
                 {
-                    UserProfile = model.UserProfile,
-                    UserSocialMedia = model.UserSocialMedia,
-                    UserLinks = model.UserLinks,
+                    UserId = User.GetUserId(),
+                    Name = model.Name,
+                    Url = model.Url,
+                    IsVisible = model.IsVisible,
+                    ButtonStyle = model.ButtonStyle,
                 };
                 return View("_UserLinks", vm);
             }
-            if (model.UserLinks.Id == 0)
-            {
-                model.UserLinks.UserId = userId;
-                _profilesRepository.AddLink(model.UserLinks);
-            }
+
+            if (model.Id == 0)
+                _profilesRepository.AddLink(model);
             else
+                _profilesRepository.UpdateLink(model);
+
+            return RedirectToAction("UserInput");
+        }
+        [HttpPost]
+        public IActionResult SaveLinkStyle(Link model)
+        {
+            var userId = User.GetUserId();
+            var userLinks = _profilesRepository.GetLinks(userId);
+            try
             {
-                model.UserLinks.UserId = userId;
-                _profilesRepository.UpdateLink(model.UserLinks);
+                foreach (var link in userLinks)
+                {
+                    link.ButtonStyle = model.ButtonStyle;
+                    _profilesRepository.UpdateLink(link);
+                }
             }
-            return RedirectToAction("Users");
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+
+            return Json(new { success = true });
         }
 
+        [HttpGet]
+        public ActionResult EditLink(int linkId)
+        {
+            var link = _profilesRepository.FindLink(linkId);
+            var linkmodel = new Link
+            {
+                Id = linkId,
+                Name = link.Name,
+                Url = link.Url,
+                UserId = link.UserId,
+                IsVisible = link.IsVisible,
+            };
+
+            return View("_UserLinks", linkmodel);
+        }
+        [HttpPost]
+        public ActionResult DeleteLink(int id)
+        {
+            try
+            {
+                var userId = User.GetUserId();
+                _profilesRepository.DeleteLink(id, userId);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+            return Json(new { success = true });
+        }
         private void SavePicture(Profile model, IFormFile profilePicture, string userId)
         {
             if (model.ProfileImage == null && profilePicture != null)

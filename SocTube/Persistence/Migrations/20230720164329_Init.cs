@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SocTube.Data.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,9 +14,9 @@ namespace SocTube.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(nullable: true),
-                    UserName = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    ContactEmail = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(maxLength: 50, nullable: true),
+                    Description = table.Column<string>(maxLength: 250, nullable: true),
+                    ContactEmail = table.Column<string>(maxLength: 150, nullable: true),
                     ProfileImage = table.Column<byte[]>(nullable: true)
                 },
                 constraints: table =>
@@ -36,6 +36,7 @@ namespace SocTube.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    LinkId = table.Column<int>(nullable: false),
                     LinkVisible = table.Column<bool>(nullable: false),
                     LinksTheme = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
@@ -60,6 +61,7 @@ namespace SocTube.Data.Migrations
                     Name = table.Column<string>(nullable: true),
                     Url = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true),
+                    IsVisible = table.Column<bool>(nullable: false),
                     ProfileId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -98,12 +100,6 @@ namespace SocTube.Data.Migrations
                         principalTable: "Profiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_SocialMedia_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -127,11 +123,6 @@ namespace SocTube.Data.Migrations
                 name: "IX_SocialMedia_ProfileId",
                 table: "SocialMedia",
                 column: "ProfileId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SocialMedia_UserId",
-                table: "SocialMedia",
-                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

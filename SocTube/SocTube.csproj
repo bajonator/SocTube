@@ -28,9 +28,22 @@
     <Compile Remove="Persistence\Migrations\20230715085201_migration.Designer.cs" />
     <Compile Remove="Persistence\Migrations\20230715085955_migrations.cs" />
     <Compile Remove="Persistence\Migrations\20230715085955_migrations.Designer.cs" />
+    <Compile Remove="Persistence\Migrations\20230716080618_init.cs" />
+    <Compile Remove="Persistence\Migrations\20230716080618_init.Designer.cs" />
+    <Compile Remove="Persistence\Migrations\20230719142520_ButtonVisible.cs" />
+    <Compile Remove="Persistence\Migrations\20230719142520_ButtonVisible.Designer.cs" />
+    <Compile Remove="Persistence\Migrations\20230719152022_RequiredUserName.cs" />
+    <Compile Remove="Persistence\Migrations\20230719152022_RequiredUserName.Designer.cs" />
+    <Compile Remove="Persistence\Migrations\20230719154201_RemoveRequired.cs" />
+    <Compile Remove="Persistence\Migrations\20230719154201_RemoveRequired.Designer.cs" />
+    <Compile Remove="Persistence\Migrations\20230719165323_Init.cs" />
+    <Compile Remove="Persistence\Migrations\20230719165323_Init.Designer.cs" />
+    <Compile Remove="Persistence\Migrations\20230720163016_PareZmian.cs" />
+    <Compile Remove="Persistence\Migrations\20230720163016_PareZmian.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="bootstrap" Version="5.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.32" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.32" />

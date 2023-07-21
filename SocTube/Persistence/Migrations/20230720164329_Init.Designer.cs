@@ -10,8 +10,8 @@ using SocTube.Persistence;
 namespace SocTube.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230716080618_init")]
-    partial class init
+    [Migration("20230720164329_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -228,6 +228,9 @@ namespace SocTube.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsVisible")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -255,10 +258,12 @@ namespace SocTube.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ContactEmail")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
 
                     b.Property<byte[]>("ProfileImage")
                         .HasColumnType("varbinary(max)");
@@ -267,7 +272,8 @@ namespace SocTube.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
@@ -284,6 +290,9 @@ namespace SocTube.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("LinkId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("LinkVisible")
                         .HasColumnType("bit");
@@ -330,7 +339,7 @@ namespace SocTube.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("YouTube")
                         .HasColumnType("nvarchar(max)");
@@ -338,8 +347,6 @@ namespace SocTube.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProfileId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("SocialMedia");
                 });
@@ -421,10 +428,6 @@ namespace SocTube.Data.Migrations
                     b.HasOne("SocTube.Core.Models.Domains.Profile", "Profile")
                         .WithMany("SocialMedia")
                         .HasForeignKey("ProfileId");
-
-                    b.HasOne("SocTube.Core.Models.Domains.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

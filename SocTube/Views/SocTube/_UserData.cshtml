@@ -4,21 +4,21 @@
 @using (Html.BeginForm("SaveUser", "SocTube", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-
-    <div class="border-dark border-top border-left">
+    <div class="border-light border-top border-left">
 
         @Html.HiddenFor(x => x.Id)
 
         <div class="row text-center justify-content-center">
             <div class="col-md-5">
-                <div class="container text-center">
+                <div class="container bg-transparent text-center">
                     <div>
-                        @if (Model != null)
+                        @if (Model != null && Model.ProfileImage != null)
                         {
-                            @if (Model.ProfileImage != null)
-                            {
-                                <img id="profilePicturePreview" src="data:image;base64,@Convert.ToBase64String(Model.ProfileImage)" class="img-thumbnail rounded-circle mt-3" width="150" height="auto">
-                            }
+                            <img id="profilePicturePreview" src="data:image;base64,@Convert.ToBase64String(Model.ProfileImage)" class="img-thumbnail rounded-circle mt-3" width="150" height="auto">
+                        }
+                        else
+                        {
+                            <img id="profilePicturePreview" src="#" class="img-thumbnail rounded-circle mt-3" width="150" height="auto" style="display: none;">
                         }
 
                     </div>
@@ -29,7 +29,7 @@
 
         <div class="row text-center justify-content-center">
             <div class="col-md-5">
-                <input type="file" id="profilePictureFile" name="profilePicture" accept="image/*" class="form-control-file" multiple style="display: none;">
+                <input type="file" id="profilePictureFile" name="profilePicture" accept="image/*" class="form-control-file bg-transparent" multiple style="display: none;">
             </div>
         </div>
 
@@ -40,7 +40,6 @@
             </div>
             <div class="form-group mt-3 col-md-5">
                 @Html.TextBoxFor(x => x.UserName, new { @class = "form-control bg-dark text-white", autofocus = "autofocus" })
-                @Html.ValidationMessageFor(x => x.UserName)
             </div>
         </div>
 
@@ -50,32 +49,20 @@
             </div>
             <div class="form-group col-md-5">
                 @Html.TextBoxFor(x => x.ContactEmail, new { @class = "form-control bg-dark text-white" })
-                @Html.ValidationMessageFor(x => x.ContactEmail)
             </div>
         </div>
 
-        <div class="row text-right justify-content-center mb-5">
+        <div class="row text-right justify-content-center mb-1">
             <div class="form-group col-md-3">
                 @Html.LabelFor(x => x.Description)
             </div>
             <div class="form-group col-md-5">
-                @Html.TextAreaFor(x => x.Description, new { @class = "form-control bg-dark text-white", rows = "2", style = "height: 100px" })
-                @Html.ValidationMessageFor(x => x.Description)
+                @Html.TextAreaFor(x => x.Description, new { @class = "form-control bg-dark text-white", rows = "2", style = "height: 100px word-break: break-all;" })
             </div>
-        </div>
-
-        <div class="row text-right justify-content-center mt-5">
-            <div class="form-group col-md-3">
-                <h5>Linki Social Mediów</h5>
-            </div>
-        </div>
-
-        <div>
-            @await Html.PartialAsync("_SocialMedia.cshtml", new SocTube.Core.Models.Domains.SocialMedia{})
         </div>
     </div>
     <div class="d-flex flex-column text-center justify-content-center align-items-center">
-        <button class="btn btn-primary btn-sm" type="submit">
+        <button class="btn btn-primary btn-lg" type="submit">
             Zapisz
         </button>
     </div>
@@ -83,8 +70,13 @@
 
 
 <script>
+
     document.getElementById("changePictureButton").addEventListener("click", function () {
-        document.getElementById("profilePictureFile").click();
+        if (!isButtonClicked) {
+            var profilePictureFile = document.getElementById("profilePictureFile");
+            profilePictureFile.click();
+        }
+        return;
     });
 
     document.getElementById("profilePictureFile").addEventListener("change", function (event) {
@@ -94,8 +86,11 @@
         reader.onload = function () {
             var profilePicturePreview = document.getElementById("profilePicturePreview");
             profilePicturePreview.src = reader.result;
+            profilePicturePreview.style.display = "";
         };
 
-        reader.readAsDataURL(input.files[0]);
+        if (input.files && input.files[0]) {
+            reader.readAsDataURL(input.files[0]);
+        }
     });
 </script>

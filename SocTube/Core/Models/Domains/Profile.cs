@@ -16,10 +16,13 @@ namespace SocTube.Core.Models.Domains
         public int Id { get; set; }
         public string UserId { get; set; }
         [Display(Name = "Twoja Nazwa")]
+        [MaxLength(50)]
         public string UserName { get; set; }
         [Display(Name = "Twój Opis")]
+        [MaxLength(250)]
         public string Description { get; set; }
         [Display(Name = "Email Kontaktowy")]
+        [MaxLength(150)]
         public string ContactEmail { get; set; }
         public ICollection<Link> Links { get; set; }
         public ICollection<SocialMedia> SocialMedia { get; set; }

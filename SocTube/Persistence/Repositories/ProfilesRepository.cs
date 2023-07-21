@@ -27,7 +27,10 @@ namespace SocTube.Persistence.Repositories
         {
             return _context.Links.Where(x => x.UserId == userId).ToList();
         }
-
+        public Link GetLink(string userId)
+        {
+            return _context.Links.FirstOrDefault(x => x.UserId == userId);
+        }
         public IEnumerable<Settings> GetSettings()
         {
             return _context.Settings.ToList();
@@ -84,25 +87,21 @@ namespace SocTube.Persistence.Repositories
             _context.SaveChanges();
         }
 
-        public Link GetLink(string userId)
-        {
-            return _context.Links.FirstOrDefault(x => x.UserId == userId);
-        }
-
         public void AddLink(Link userLinks)
-        {
+        { 
             _context.Links.Add(userLinks);
-            userLinks.UserId = userLinks.UserId;
             _context.SaveChanges();
         }
 
         public void UpdateLink(Link userLinks)
         {
-            var existingProfile = _context.Links.FirstOrDefault(x => x.UserId == userLinks.UserId);
+            var existingProfile = _context.Links.FirstOrDefault(x => x.UserId == userLinks.UserId && x.Id == userLinks.Id);
             if (existingProfile != null)
             {
                 existingProfile.Url = userLinks.Url;
                 existingProfile.Name = userLinks.Name;
+                existingProfile.IsVisible = userLinks.IsVisible;
+                existingProfile.ButtonStyle = userLinks.ButtonStyle;
 
                 _context.SaveChanges();
             }
@@ -119,7 +118,7 @@ namespace SocTube.Persistence.Repositories
 
         public void UpdateSocial(SocialMedia socialMedia, int id)
         {
-            var existingProfile = _context.SocialMedia.Find(id);
+            var existingProfile = _context.SocialMedia.FirstOrDefault(x => x.UserId == socialMedia.UserId);
 
             if (existingProfile != null)
             {
@@ -132,11 +131,27 @@ namespace SocTube.Persistence.Repositories
                 existingProfile.Github = socialMedia.Github;
                 _context.SaveChanges();
             }
+            else
+            {
+                AddSocial(socialMedia);
+            }
         }
 
         public List<SocialMedia> GetListMedia(string userId)
         {
             return _context.SocialMedia.Where(x => x.UserId == userId).ToList();
+        }
+
+        public Link FindLink(int linkId)
+        {
+            return _context.Links.Find(linkId);
+        }
+
+        public void DeleteLink(int linkId, string userId)
+        {
+            var link = _context.Links.Find(linkId);
+            _context.Links.Remove(link);
+            _context.SaveChanges();
         }
     }
 }

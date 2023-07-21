@@ -2,7 +2,7 @@
 
 <div class="row mt-5 ">
     <div class="col-md-3">
-        <ul class="nav flex-column border-top border-left border-dark">
+        <ul class="nav flex-column border-top border-left border-light">
             <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#preview">Podgląd</a>
             </li>
@@ -10,7 +10,10 @@
                 <a class="nav-link" data-toggle="tab" href="#settings">Ustawienia</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#links">Linki</a>
+                <a class="nav-link" data-toggle="tab" href="#media">Social Media</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#links">Dodaj Link</a>
             </li>
             <li class="nav-item">
                 <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
@@ -24,19 +27,51 @@
     <div class="col-md-9">
         <div class="tab-content">
             <div class="tab-pane fade show active" id="preview">
-                @if (Model != null)
+                @if (Model.UserProfile != null)
                 {
                     @await Html.PartialAsync("_Preview", Model.UserProfile)
-                }else
-                    @await Html.PartialAsync("_UserData", Model.UserProfile.SocialMedia)
+                }
+                else
+                    @await Html.PartialAsync("_UserData", Model.UserProfile)
 
             </div>
             <div class="tab-pane fade" id="settings">
-                @await Html.PartialAsync("_UserData", Model.UserProfile)
+                @if (Model.UserProfile != null)
+                {
+                    @await Html.PartialAsync("_UserData", Model.UserProfile)
+                }
+                else
+                    @await Html.PartialAsync("_UserData", Model.UserProfile)
+
+            </div>
+            <div class="tab-pane fade" id="media">
+                @if (Model.UserProfile != null)
+                {
+                    @await Html.PartialAsync("_SocialMedia", Model.UserSocialMedia)
+                }
+                else
+                    @await Html.PartialAsync("_UserData", Model.UserProfile)
+
             </div>
             <div class="tab-pane fade" id="links">
-                    @await Html.PartialAsync("_UserLinks", Model)
-                </div>
+                @if (Model.UserProfile != null)
+                {
+                    @await Html.PartialAsync("_UserLinks", Model.UserLinks)
+                }
+                else
+                    @await Html.PartialAsync("_UserData", Model.UserProfile)
+
+            </div>
         </div>
     </div>
 </div>
+    <script>
+        function changePreviewStyle(style) {
+            document.getElementById('HiddenButtonStyle').value = style;
+
+            var previewButtons = document.querySelectorAll('.btn-preview');
+            previewButtons.forEach(function (button) {
+                button.className = 'btn rounded ' + style + ' btn-preview ml-1';
+            });
+        }
+    </script>

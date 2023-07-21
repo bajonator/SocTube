@@ -5,12 +5,12 @@
 {
     <div class="border d-flex justify-content-center text-center bg-dark text-light">
         <p>
-            SocTube<br class="mb-2" /> <b>Portal w którym możesz udostępniać swoje linki do stron, blogów oraz róznych social medii.</b>
+            <img src="~/content/image/soctube.png" class="rounded-lg mt-2 mb-2" width="200" /><br class="mb-2" /> <b>To portal w którym możesz udostępniać swoje linki do stron, blogów oraz róznych social medii z jednego miejsca.</b>
         </p>
 
     </div>
     <div class="table-responsive mt-5 d-flex justify-content-center">
-        <table class="table align-middle table-hover table-sm table-borderless table-bordered col-6">
+        <table class="table align-middle table-hover table-sm table-borderless text-light table-bordered col-6">
             <tbody>
                 @foreach (var (userProfile, index) in Model.UserProfiles.Select((profile, index) => (profile, index)))
                 {
@@ -18,11 +18,13 @@
                         <td class="text-center" style="vertical-align: middle; font-size: 20px;">
                             <strong>@(index + 1).</strong>
                         </td>
-                        <td class="text-center">
-                            @if (userProfile.ProfileImage != null)
-                            {
-                                <img src="data:image/png;base64,@Convert.ToBase64String(userProfile.ProfileImage)" alt="Profile Image" class="img-thumbnail rounded-circle" width="100" height="auto" />
-                            }
+                        <td class="text-center col-3">
+                            <div class="container d-flex align-items-center justify-content-center">
+                                @if (userProfile.ProfileImage != null)
+                                {
+                                    <img src="data:image/png;base64,@Convert.ToBase64String(userProfile.ProfileImage)" alt="Profile Image" class="img-thumbnail bg-transparent rounded-circle" width="100" height="auto" />
+                                }
+                            </div>
                         </td>
                         <td>
                             <div class="flex-sm-row text-left">
@@ -37,7 +39,7 @@
                                         </p>
                                         @if (userProfile.Description != null)
                                         {
-                                            <span>@userProfile.Description</span>
+                                        <span class ="text-wrap col-md-1" style="word-wrap:break-word; word-break:break-all;">@userProfile.Description</span>
                                         }
                                 </div>
                                 <div class="col-12 mt-2 mb-2">
@@ -74,5 +76,5 @@
 }
 else
 {
-    <p>No user profiles available.</p>
+    <p>Nie ma jeszcze żadnych profili.</p>
 }

@@ -2,85 +2,124 @@
 
 @if (Model != null)
 {
-
-    <div class="mt-3 container text-center">
-        <a href="@Url.Action("UserPage", "SocTube", new { userId = Model.UserId })">@Model.UserName</a>
-    </div>
-    <div class="container text-center d-flex justify-content-center">
-        <div>
-            @if (Model.ProfileImage != null)
-            {
-                <img src="data:image;base64,@Convert.ToBase64String(Model.ProfileImage)" class="img-thumbnail rounded-circle" width="150" height="auto">
-            }
+    <div class="border-light border-top border-left">
+        <div class="mt-3 container text-center mb-2">
+            <a>@Url.Action("UserPage", "SocTube", new { userName = Model.UserName })</a>
         </div>
-    </div>
-    <div class="text-center mt-5">
-        <div class="row justify-content-center rounded">
-            <div class="col-6">
-                <div class="p-3 rounded-end">
-                    <strong>@Model.UserName</strong>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="p-3 rounded-end">
-                    <p><strong>Email Kontaktowy:</strong> @Model.ContactEmail</p>
-                </div>
+        <div class="container text-center d-flex justify-content-center">
+            <div>
+                @if (Model.ProfileImage != null)
+                {
+                    <img src="data:image;base64,@Convert.ToBase64String(Model.ProfileImage)" class="img-thumbnail bg-transparent rounded-circle" width="150" height="auto">
+                }
             </div>
         </div>
-        <div class="p-3 bg-opacity-30 rounded">
-            <h4>Opis:</h4>
-            <strong>@Model.Description</strong>
-        </div>
+        <div class="text-center mt-5">
+            <div class="row justify-content-center rounded">
+                <div class="col-6">
+                    <div class="p-3 rounded-end">
+                        <p><strong>Nazwa Profilu:</strong> @Model.UserName</p>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="p-3 rounded-end">
+                        <p><strong>Email Kontaktowy:</strong> @Model.ContactEmail</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-3 bg-opacity-30 rounded">
+                <h4>Opis:</h4>
+                <strong class="text-wrap" style="word-wrap:break-word; word-break:break-all">@Model.Description</strong>
+            </div>
 
-        <div class="row text-center justify-content-center mt-5">
-            <div class="form-group col-md-3">
-                <h5>Linki Social Mediów</h5>
-                <div class="text-center justify-content-center">
-                    @foreach (var item in Model.SocialMedia)
-                    {
-                        if (item.UserId == Model.UserId)
+            <div class="row text-center justify-content-center mt-5">
+                <div class="form-group col-md-3">
+                    <h5>Linki Social Mediów</h5>
+                    <div class="text-center justify-content-center">
+                        @foreach (var item in Model.SocialMedia)
                         {
-                            var items = item.GetType().GetProperties();
-                            foreach (var s in items)
+                            if (item.UserId == Model.UserId)
                             {
-                                var c = s.GetValue(item);
-                                if (c != null && !string.IsNullOrEmpty(s.ToString()) && !s.Name.ToString().Contains("Id") && !s.Name.ToString().Contains("Profile"))
+                                var items = item.GetType().GetProperties();
+                                foreach (var s in items)
                                 {
-                                    var iconName = s.Name + ".png";
-                                    var iconUrl = c.ToString();
-                                    <a class="mr-1" href="@iconUrl" target="_blank">
-                                        <img src="~/content/image/@iconName" width="20" height="20" />
-                                    </a>
+                                    var c = s.GetValue(item);
+                                    if (c != null && !string.IsNullOrEmpty(s.ToString()) && !s.Name.ToString().Contains("Id") && !s.Name.ToString().Contains("Profile"))
+                                    {
+                                        var iconName = s.Name + ".png";
+                                        var iconUrl = c.ToString();
+                                        <a class="mr-1" href="@iconUrl" target="_blank">
+                                            <img src="~/content/image/@iconName" width="30" height="30" />
+                                        </a>
+                                    }
                                 }
                             }
                         }
-                        @*                    var value = property.GetValue(Model.UserSocialMedia, null);
-                if (value != null && !string.IsNullOrEmpty(value.ToString()) && !property.Name.ToString().Contains("Id"))
-                {
-                var iconName = property.Name + ".png";
-                var iconUrl = value.ToString();*@
-
-
-                    }
+                    </div>
                 </div>
             </div>
-        </div>
-
-        @*    @if (Model.UserLinks != null)
-    {
-        var userLinks = Model.UserLinks.GetType().GetProperties();
-        foreach (var userLink in userLinks)
-        {
-            var value = userLink.GetValue(Model.UserLinks, null);
-            if (userLink.Name.ToString().Contains("Url"))
+            <h5 class="mt-3">Inne linki</h5>
+            @if (Model.Links != null)
             {
-                <a href="@value">@value</a>
-                 <br />
+                foreach (var userLink in Model.Links)
+                {
+                    if (userLink.UserId == Model.UserId)
+                    {
+                        var link = userLink.Url.ToString();
+                        if (!link.StartsWith("http://") && !link.StartsWith("https://"))
+                        {
+                            link = "https://" + link;
+                        }
+                        <div class="mb-1">
+                            <a style="width:400px;" href="@link" target="_blank" class="btn btn-lg btn-preview @userLink.ButtonStyle">@userLink.Name</a>
+                            <div class="form-group">
+                                <a href="@Url.Action("EditLink", "SocTube", new { linkId = userLink.Id })">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                                <a href="javascript:void(0);" class="delete-link ml-5" data-link-id="@userLink.Id">
+                                    <i class="fas fa-trash-alt"></i> 
+                                </a>
+                            </div>
+                        </div>
+                    }
+                }
             }
-        }
-    }*@
+        </div>
     </div>
 }
 
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+        $(".delete-link").on("click", function() {
+            var linkId = $(this).data("link-id");
+            var row = $(this).closest(".mb-1");
+
+            if (!confirm("Czy na pewno chcesz usunąć link?"))
+                return;
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("DeleteLink", "SocTube")",
+                data: {
+                    id: linkId
+                },
+                success: function (data) {
+                    if (data.success) {
+                        row.remove();
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error: function (data) {
+                    alert(data.message);
+                },
+                dataType: "json"
+            });
+        });
+    });
+
+</Script>
