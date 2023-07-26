@@ -14,11 +14,11 @@
                     <div>
                         @if (Model != null && Model.ProfileImage != null)
                         {
-                            <img id="profilePicturePreview" src="data:image;base64,@Convert.ToBase64String(Model.ProfileImage)" class="img-thumbnail rounded-circle mt-3" width="150" height="auto">
+                            <img id="profilePicturePreview" src="data:image;base64,@Convert.ToBase64String(Model.ProfileImage)" class="img-thumbnail rounded-circle mt-3" width="150" height="auto" alt="Profile Image">
                         }
                         else
                         {
-                            <img id="profilePicturePreview" src="#" class="img-thumbnail rounded-circle mt-3" width="150" height="auto" style="display: none;">
+                            <img id="profilePicturePreview" src="#" class="img-thumbnail rounded-circle mt-3" width="150" height="auto" style="display: none;" alt="Profile Image">
                         }
 
                     </div>
@@ -38,8 +38,9 @@
             <div class="form-group mt-3 col-md-3">
                 @Html.LabelFor(x => x.UserName)
             </div>
-            <div class="form-group mt-3 col-md-5">
+            <div class="form-group ml-3 mt-3 col-md-5">
                 @Html.TextBoxFor(x => x.UserName, new { @class = "form-control bg-dark text-white", autofocus = "autofocus" })
+                <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
         </div>
 
@@ -47,7 +48,7 @@
             <div class="form-group col-md-3">
                 @Html.LabelFor(x => x.ContactEmail)
             </div>
-            <div class="form-group col-md-5">
+            <div class="form-group ml-3 col-md-5">
                 @Html.TextBoxFor(x => x.ContactEmail, new { @class = "form-control bg-dark text-white" })
             </div>
         </div>
@@ -56,8 +57,9 @@
             <div class="form-group col-md-3">
                 @Html.LabelFor(x => x.Description)
             </div>
-            <div class="form-group col-md-5">
-                @Html.TextAreaFor(x => x.Description, new { @class = "form-control bg-dark text-white", rows = "2", style = "height: 100px word-break: break-all;" })
+            <div class="form-group ml-3 col-md-5">
+                @Html.TextAreaFor(x => x.Description, new { @class = "form-control bg-dark text-white", rows = "2", style = "height: 100px word-break: break-all;",  id = "textArea" })
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
         </div>
     </div>
@@ -68,29 +70,3 @@
     </div>
 }
 
-
-<script>
-
-    document.getElementById("changePictureButton").addEventListener("click", function () {
-        if (!isButtonClicked) {
-            var profilePictureFile = document.getElementById("profilePictureFile");
-            profilePictureFile.click();
-        }
-        return;
-    });
-
-    document.getElementById("profilePictureFile").addEventListener("change", function (event) {
-        var input = event.target;
-        var reader = new FileReader();
-
-        reader.onload = function () {
-            var profilePicturePreview = document.getElementById("profilePicturePreview");
-            profilePicturePreview.src = reader.result;
-            profilePicturePreview.style.display = "";
-        };
-
-        if (input.files && input.files[0]) {
-            reader.readAsDataURL(input.files[0]);
-        }
-    });
-</script>

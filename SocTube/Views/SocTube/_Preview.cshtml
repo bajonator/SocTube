@@ -10,7 +10,7 @@
             <div>
                 @if (Model.ProfileImage != null)
                 {
-                    <img src="data:image;base64,@Convert.ToBase64String(Model.ProfileImage)" class="img-thumbnail bg-transparent rounded-circle" width="150" height="auto">
+                    <img src="data:image;base64,@Convert.ToBase64String(Model.ProfileImage)" class="img-thumbnail bg-transparent rounded-circle" width="150" height="auto" alt="Profile Image">
                 }
             </div>
         </div>
@@ -49,7 +49,7 @@
                                         var iconName = s.Name + ".png";
                                         var iconUrl = c.ToString();
                                         <a class="mr-1" href="@iconUrl" target="_blank">
-                                            <img src="~/content/image/@iconName" width="30" height="30" />
+                                            <img src="~/content/image/@iconName" width="30" height="30" alt="@iconName"/>
                                         </a>
                                     }
                                 }
@@ -71,7 +71,7 @@
                             link = "https://" + link;
                         }
                         <div class="mb-1">
-                            <a style="width:400px;" href="@link" target="_blank" class="btn btn-lg btn-preview @userLink.ButtonStyle">@userLink.Name</a>
+                            <a style="width:400px;" href="@link" target="_blank" class="btn btn-sm @userLink.ButtonStyle">@userLink.Name</a>
                             <div class="form-group">
                                 <a href="@Url.Action("EditLink", "SocTube", new { linkId = userLink.Id })">
                                     <i class="fas fa-pencil-alt"></i>
@@ -87,10 +87,8 @@
         </div>
     </div>
 }
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script type="text/javascript">
   $(document).ready(function() {

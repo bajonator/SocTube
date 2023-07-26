@@ -3,7 +3,6 @@
 @using (Html.BeginForm("SaveMedia", "SocTube", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="border-light border-top border-left">
-        @Html.HiddenFor(x => x.Profile.Id)
 
         <div class="row text-right justify-content-center mt-5">
             <div class="form-group col-md-3">
@@ -14,7 +13,7 @@
             <div class="form-group col-md-3">
                 <img src="~/content/image/facebook.png" width="30" height="30" />
             </div>
-            <div class="form-group col-md-5">
+            <div class="form-group ml-3 col-md-5">
                 @Html.TextBoxFor(x => x.Facebook, new { @class = "form-control bg-dark text-white" })
             </div>
         </div>
@@ -22,7 +21,7 @@
             <div class="form-group col-md-3">
                 <img src="~/content/image/youtube.png" width="30" height="30" />
             </div>
-            <div class="form-group col-md-5">
+            <div class="form-group ml-3 col-md-5">
                 @Html.TextBoxFor(x => x.YouTube, new { @class = "form-control bg-dark text-white" })
             </div>
         </div>
@@ -30,7 +29,7 @@
             <div class="form-group col-md-3">
                 <img src="~/content/image/instagram.png" width="30" height="30" />
             </div>
-            <div class="form-group col-md-5">
+            <div class="form-group ml-3 col-md-5">
                 @Html.TextBoxFor(x => x.Instagram, new { @class = "form-control bg-dark text-white" })
             </div>
         </div>
@@ -38,7 +37,7 @@
             <div class="form-group col-md-3">
                 <img src="~/content/image/twitch.png" width="30" height="30" />
             </div>
-            <div class="form-group col-md-5">
+            <div class="form-group ml-3 col-md-5">
                 @Html.TextBoxFor(x => x.Twitch, new { @class = "form-control bg-dark text-white" })
             </div>
         </div>
@@ -46,7 +45,7 @@
             <div class="form-group col-md-3">
                 <img src="~/content/image/twitter.png" width="35" height="35" />
             </div>
-            <div class="form-group col-md-5">
+            <div class="form-group ml-3 col-md-5">
                 @Html.TextBoxFor(x => x.Twitter, new { @class = "form-control bg-dark text-white" })
             </div>
         </div>
@@ -54,7 +53,7 @@
             <div class="form-group col-md-3">
                 <img src="~/content/image/tiktok.png" width="30" height="30" />
             </div>
-            <div class="form-group col-md-5">
+            <div class="form-group ml-3 col-md-5">
                 @Html.TextBoxFor(x => x.Tiktok, new { @class = "form-control bg-dark text-white" })
             </div>
         </div>
@@ -62,7 +61,7 @@
             <div class="form-group col-md-3">
                 <img src="~/content/image/github.png" width="30" height="30" />
             </div>
-            <div class="form-group col-md-5">
+            <div class="form-group ml-3 col-md-5">
                 @Html.TextBoxFor(x => x.Github, new { @class = "form-control bg-dark text-white" })
             </div>
         </div>

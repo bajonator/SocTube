@@ -3,9 +3,11 @@
 <div class="container mt-5 " style="padding: 5px;">
     <div class="row">
         <div class="col-md-6 text-center border-primary border-left border-right border-top rounded-top rounded-bottom">
-            <div class="mt-3 mb-2 rounded border bg-success">
-                <p>Kliknij poniżej, aby skopiować link do swojej strony</p>
-                <a href="#" onclick="copyToClipboard('@Url.Action("UserPage", "SocTube", new { userId = Model.UserProfile.UserId })'); return false;">@Url.Action("UserPage", "SocTube", new { userName = Model.UserProfile.UserName })</a>
+            <div class="mt-3 mb-2 rounded border bg-info bg-opacity-50">
+                <small>
+                    Kliknij poniżej, aby skopiować link do swojej strony <br/>
+                    <a href="#" onclick="copyToClipboard('@Url.Action("UserPage", "SocTube", new { userId = Model.UserProfile.UserId })'); return false;">@Url.Action("UserPage", "SocTube", new { userName = Model.UserProfile.UserName })</a>
+                </small>
             </div>
             <div>
                 @if (Model.UserProfile.ProfileImage != null)
@@ -94,7 +96,7 @@
                                         userLinks = "https://" + userLinks;
                                     }
                                     <div class="text-center mb-2 mt-2">
-                                        <a href="@userLinks" target="_blank" class="btn btn-lg @link.ButtonStyle" style="width:400px;">@link.Name</a>
+                                        <a href="@userLinks" target="_blank" class="btn btn-sm @link.ButtonStyle" style="width:400px;">@link.Name</a>
                                     </div>
                                 }
                             }

@@ -14,7 +14,7 @@ namespace SocTube.Core.Models.Domains
         public string Github { get; set; }
         public string Facebook { get; set; }
         public string UserId { get; set; }
-        public Profile Profile { get; set; }
+        //public Profile Profile { get; set; }
         //public ApplicationUser User { get; set; }
     }
 }

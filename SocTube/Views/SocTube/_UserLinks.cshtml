@@ -1,7 +1,6 @@
 ﻿@model SocTube.Core.Models.Domains.Link
 
 
-
 @using (Html.BeginForm("SaveLink", "SocTube", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
@@ -10,28 +9,34 @@
     <div class="border-light border-top border-left">
         <div class="row text-right justify-content-center mt-5">
             <div class="form-group col-md-3">
-                <h5>Dodawanie Linku</h5>
+                @if (Model.Id == 0)
+                {
+                    <h5>Dodawanie Linku</h5>
+                }
+                else
+                {
+                    <h5>Edycja Linku</h5>
+                }
             </div>
         </div>
         <div class="row text-right justify-content-center">
             <div class="form-group mt-3 col-md-3">
                 @Html.LabelFor(x => x.Name)
             </div>
-            <div class="form-group mt-3 col-md-5">
+            <div class="form-group mt-3 ml-3 col-md-5">
                 @Html.TextBoxFor(x => x.Name, new { @class = "form-control bg-dark text-white", autofocus = "autofocus" })
-                @Html.ValidationMessageFor(x => x.Name)
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
         </div>
         <div class="row text-right justify-content-center">
             <div class="form-group mt-3 col-md-3">
                 @Html.LabelFor(x => x.Url)
             </div>
-            <div class="form-group mt-3 col-md-5">
+            <div class="form-group mt-3 ml-3 col-md-5">
                 @Html.TextBoxFor(x => x.Url, new { @class = "form-control bg-dark text-white" })
-                @Html.ValidationMessageFor(x => x.Url)
+                <span asp-validation-for="Url" class="text-danger"></span>
             </div>
         </div>
-
         <div class="row text-right justify-content-center">
             <div class="form-group mt-3 col-md-3">
                 <label class="form-check-label" for="IsVisible">Widoczność</label>
@@ -46,66 +51,34 @@
                 Zapisz
             </button>
         </div>
+        <div class="d-flex justify-content-center">
 
-        <div class="form-group col-md-5 mt-5 ml-2">
-            <label for="ButtonStyle">Wybierz styl dla linków:</label>
-            <div class="btn-group container mt-1">
-                <button type="button" class="btn rounded btn-primary btn-preview ml-1 non-changing-btn" data-style="btn-primary">Primary</button>
-                <button type="button" class="btn rounded btn-secondary btn-preview ml-1 non-changing-btn" data-style="btn-secondary">Secondary</button>
-                <button type="button" class="btn rounded btn-success btn-preview ml-1 non-changing-btn" data-style="btn-success">Success</button>
-                <button type="button" class="btn rounded btn-danger btn-preview ml-1 non-changing-btn" data-style="btn-danger">Danger</button>
-                <button type="button" class="btn rounded btn-warning btn-preview ml-1 non-changing-btn" data-style="btn-warning">Warning</button>
-                <button type="button" class="btn rounded btn-info btn-preview ml-1 non-changing-btn" data-style="btn-info">Info</button>
-                <button type="button" class="btn rounded btn-light btn-preview ml-1 non-changing-btn" data-style="btn-light">Light</button>
-                <button type="button" class="btn rounded btn-dark btn-preview ml-1 non-changing-btn" data-style="btn-dark">Dark</button>
+            <div class="form-group border border-warning-subtle col-md-8 mt-5 ml-2">
+                <label for="ButtonStyle">
+                    Wybierz styl dla linków: <br>
+                    <small class="text-danger">*Uwaga: Po kliknieciu wszystkie linki zaktualizuja swoj styl</small>
+                </label>
+
+                <div class="btn-group d-flex flex-wrap mt-3">
+                    <button type="button" class="btn rounded btn-sm btn-primary btn-preview ml-1 non-changing-btn" data-style="btn-primary">Primary</button>
+                    <button type="button" class="btn rounded btn-sm btn-secondary btn-preview ml-1 non-changing-btn" data-style="btn-secondary">Secondary</button>
+                    <button type="button" class="btn rounded btn-sm btn-success btn-preview ml-1 non-changing-btn" data-style="btn-success">Success</button>
+                    <button type="button" class="btn rounded btn-sm btn-danger btn-preview ml-1 non-changing-btn" data-style="btn-danger">Danger</button>
+                    <button type="button" class="btn rounded btn-sm btn-warning btn-preview ml-1 non-changing-btn" data-style="btn-warning">Warning</button>
+                    <button type="button" class="btn rounded btn-sm btn-info btn-preview ml-1 non-changing-btn" data-style="btn-info">Info</button>
+                    <button type="button" class="btn rounded btn-sm btn-light btn-preview ml-1 non-changing-btn" data-style="btn-light">Light</button>
+               </div>
+                <div class="btn-group d-flex flex-wrap mt-1 mb-2">
+                    <button type="button" class="btn rounded btn-sm btn-outline-primary btn-preview ml-1 non-changing-btn" data-style="btn-outline-primary">Primary</button>
+                    <button type="button" class="btn rounded btn-sm btn-outline-secondary btn-preview ml-1 non-changing-btn" data-style="btn-outline-secondary">Secondary</button>
+                    <button type="button" class="btn rounded btn-sm btn-outline-success btn-preview ml-1 non-changing-btn" data-style="btn-outline-success">Success</button>
+                    <button type="button" class="btn rounded btn-sm btn-outline-danger btn-preview ml-1 non-changing-btn" data-style="btn-outline-danger">Danger</button>
+                    <button type="button" class="btn rounded btn-sm btn-outline-warning btn-preview ml-1 non-changing-btn" data-style="btn-outline-warning">Warning</button>
+                    <button type="button" class="btn rounded btn-sm btn-outline-info btn-preview ml-1 non-changing-btn" data-style="btn-outline-info">Info</button>
+                    <button type="button" class="btn rounded btn-sm btn-outline-light btn-preview ml-1 non-changing-btn" data-style="btn-outline-light">Light</button>
+              </div>
+                @Html.HiddenFor(x => x.ButtonStyle, new { id = "HiddenButtonStyle" })
             </div>
-            <div class="btn-group container mt-1">
-                <button type="button" class="btn rounded btn-outline-primary btn-preview ml-1 non-changing-btn" data-style="btn-outline-primary">Primary</button>
-                <button type="button" class="btn rounded btn-outline-secondary btn-preview ml-1 non-changing-btn" data-style="btn-outline-secondary">Secondary</button>
-                <button type="button" class="btn rounded btn-outline-success btn-preview ml-1 non-changing-btn" data-style="btn-outline-success">Success</button>
-                <button type="button" class="btn rounded btn-outline-danger btn-preview ml-1 non-changing-btn" data-style="btn-outline-danger">Danger</button>
-                <button type="button" class="btn rounded btn-outline-warning btn-preview ml-1 non-changing-btn" data-style="btn-outline-warning">Warning</button>
-                <button type="button" class="btn rounded btn-outline-info btn-preview ml-1 non-changing-btn" data-style="btn-outline-info">Info</button>
-                <button type="button" class="btn rounded btn-outline-light btn-preview ml-1 non-changing-btn" data-style="btn-outline-light">Light</button>
-                <button type="button" class="btn rounded btn-outline-dark btn-preview ml-1 non-changing-btn" data-style="btn-outline-dark">Dark</button>
-            </div>
-            @Html.HiddenFor(x => x.ButtonStyle, new { id = "HiddenButtonStyle" })
         </div>
     </div>
 }
-
-<script>
-
-
-    var previewButtons = document.querySelectorAll('.btn-preview');
-    previewButtons.forEach(function (button) {
-        button.addEventListener('click', function () {
-            var selectedStyle = this.getAttribute('data-style');
-            changePreviewStyle(selectedStyle);
-
-            function changePreviewStyle(style) {
-                document.getElementById('HiddenButtonStyle').value = style;
-
-                var previewButtons = document.querySelectorAll('.btn-preview');
-                previewButtons.forEach(function (button) {
-                    if (!button.classList.contains('non-changing-btn')) {
-                        button.className = 'btn rounded ' + style;
-                    }
-                });
-            }
-
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("SaveLinkStyle", "SocTube")',
-                data: { buttonStyle: selectedStyle },
-                success: function (data) {
-                    alert("Pomyślnie zmieniono style dla linków");
-                },
-                error: function (error) {
-                    alert("Wystąpił błąd podczas zmiany styli" + data.Message);
-                }
-            });
-        });
-    });
-
-</script>

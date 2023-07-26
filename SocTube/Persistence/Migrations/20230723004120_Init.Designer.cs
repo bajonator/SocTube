@@ -10,7 +10,7 @@ using SocTube.Persistence;
 namespace SocTube.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230720164329_Init")]
+    [Migration("20230723004120_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -228,16 +228,21 @@ namespace SocTube.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ButtonStyle")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsVisible")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ProfileId")
                         .HasColumnType("int");
 
                     b.Property<string>("Url")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
@@ -262,6 +267,7 @@ namespace SocTube.Data.Migrations
                         .HasMaxLength(150);
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
@@ -272,6 +278,7 @@ namespace SocTube.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
@@ -293,9 +300,6 @@ namespace SocTube.Data.Migrations
 
                     b.Property<int>("LinkId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("LinkVisible")
-                        .HasColumnType("bit");
 
                     b.Property<string>("LinksTheme")
                         .HasColumnType("nvarchar(max)");
@@ -425,7 +429,7 @@ namespace SocTube.Data.Migrations
 
             modelBuilder.Entity("SocTube.Core.Models.Domains.SocialMedia", b =>
                 {
-                    b.HasOne("SocTube.Core.Models.Domains.Profile", "Profile")
+                    b.HasOne("SocTube.Core.Models.Domains.Profile", null)
                         .WithMany("SocialMedia")
                         .HasForeignKey("ProfileId");
                 });

@@ -90,7 +90,7 @@ namespace SocTube.Controllers
         }
         [HttpGet]
         [Route("SocTube/UserPage/{UserId}")]
-        public IActionResult UserPage(string userId, string userName, SocialMedia userViewModel, Link userLink)
+        public IActionResult UserPage(string userId, Link userLink)
         {
             var userInput = new UserViewModel
             {
@@ -104,6 +104,7 @@ namespace SocTube.Controllers
             return View(userInput);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult SaveUser(Profile model, IFormFile profilePicture)
         {
             var userId = User.GetUserId();
@@ -131,14 +132,14 @@ namespace SocTube.Controllers
                 return RedirectToAction("UserInput");
             }
 
-            return View(model);
+            return View("_UserData");
         }
         [HttpPost]
         public IActionResult SaveMedia(SocialMedia socialMedia)
         {
             var userId = User.GetUserId();
             var profile = _profilesRepository.GetUser(userId);
-
+            
             ModelState.Remove("Profile.Id");
             if (ModelState.IsValid)
             {
@@ -169,7 +170,9 @@ namespace SocTube.Controllers
         [HttpPost]
         public IActionResult SaveLink(Link model)
         {
+            var userId = User.GetUserId();
             model.UserId = User.GetUserId();
+            var buttonStyle = _profilesRepository.GetActiveStyle(userId);
 
             ModelState.Remove("Id");
 
@@ -183,9 +186,14 @@ namespace SocTube.Controllers
                     IsVisible = model.IsVisible,
                     ButtonStyle = model.ButtonStyle,
                 };
+
+
                 return View("_UserLinks", vm);
             }
-
+            if (buttonStyle != null)
+            {
+                model.ButtonStyle = buttonStyle.ButtonStyle;
+            }
             if (model.Id == 0)
                 _profilesRepository.AddLink(model);
             else
@@ -217,7 +225,9 @@ namespace SocTube.Controllers
         [HttpGet]
         public ActionResult EditLink(int linkId)
         {
+            var userId = User.GetUserId();
             var link = _profilesRepository.FindLink(linkId);
+            var buttonStyle = _profilesRepository.GetActiveStyle(userId);
             var linkmodel = new Link
             {
                 Id = linkId,
@@ -225,6 +235,7 @@ namespace SocTube.Controllers
                 Url = link.Url,
                 UserId = link.UserId,
                 IsVisible = link.IsVisible,
+                ButtonStyle = buttonStyle.ButtonStyle,
             };
 
             return View("_UserLinks", linkmodel);

@@ -14,8 +14,8 @@ namespace SocTube.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(nullable: true),
-                    UserName = table.Column<string>(maxLength: 50, nullable: true),
-                    Description = table.Column<string>(maxLength: 250, nullable: true),
+                    UserName = table.Column<string>(maxLength: 50, nullable: false),
+                    Description = table.Column<string>(maxLength: 250, nullable: false),
                     ContactEmail = table.Column<string>(maxLength: 150, nullable: true),
                     ProfileImage = table.Column<byte[]>(nullable: true)
                 },
@@ -37,7 +37,6 @@ namespace SocTube.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LinkId = table.Column<int>(nullable: false),
-                    LinkVisible = table.Column<bool>(nullable: false),
                     LinksTheme = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },
@@ -58,9 +57,10 @@ namespace SocTube.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    Url = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
+                    Url = table.Column<string>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
+                    ButtonStyle = table.Column<string>(nullable: true),
                     IsVisible = table.Column<bool>(nullable: false),
                     ProfileId = table.Column<int>(nullable: true)
                 },

@@ -7,7 +7,7 @@
                 <a class="nav-link active" data-toggle="tab" href="#preview">Podgląd</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#settings">Ustawienia</a>
+                <a class="nav-link" data-toggle="tab" href="#settings">Profil</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#media">Social Media</a>
@@ -33,45 +33,88 @@
                 }
                 else
                     @await Html.PartialAsync("_UserData", Model.UserProfile)
-
-            </div>
+                </div>
             <div class="tab-pane fade" id="settings">
-                @if (Model.UserProfile != null)
+                    @if (Model.UserProfile != null)
                 {
                     @await Html.PartialAsync("_UserData", Model.UserProfile)
                 }
                 else
                     @await Html.PartialAsync("_UserData", Model.UserProfile)
-
             </div>
-            <div class="tab-pane fade" id="media">
-                @if (Model.UserProfile != null)
+                <div class="tab-pane fade" id="media">
+                    @if (Model.UserProfile != null)
                 {
                     @await Html.PartialAsync("_SocialMedia", Model.UserSocialMedia)
                 }
                 else
                     @await Html.PartialAsync("_UserData", Model.UserProfile)
-
             </div>
-            <div class="tab-pane fade" id="links">
-                @if (Model.UserProfile != null)
+                <div class="tab-pane fade" id="links">
+                    @if (Model.UserProfile != null)
                 {
                     @await Html.PartialAsync("_UserLinks", Model.UserLinks)
                 }
                 else
                     @await Html.PartialAsync("_UserData", Model.UserProfile)
-
             </div>
         </div>
     </div>
 </div>
-    <script>
-        function changePreviewStyle(style) {
-            document.getElementById('HiddenButtonStyle').value = style;
 
-            var previewButtons = document.querySelectorAll('.btn-preview');
-            previewButtons.forEach(function (button) {
-                button.className = 'btn rounded ' + style + ' btn-preview ml-1';
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $(document).on("click", "#changePictureButton", function () {
+            $("#profilePictureFile").click();
+        });
+
+        $(document).on("change", "#profilePictureFile", function (event) {
+            var input = event.target;
+            var reader = new FileReader();
+
+            reader.onload = function () {
+                var profilePicturePreview = $("#profilePicturePreview");
+                profilePicturePreview.attr("src", reader.result);
+                profilePicturePreview.show();
+            };
+
+            if (input.files && input.files[0]) {
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+    });
+
+        var previewButtons = document.querySelectorAll('.btn-preview');
+        previewButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                var selectedStyle = this.getAttribute('data-style');
+                changePreviewStyle(selectedStyle);
+
+                function changePreviewStyle(style) {
+                    document.getElementById('HiddenButtonStyle').value = style;
+
+                    var previewButtons = document.querySelectorAll('.btn-preview');
+                    previewButtons.forEach(function (button) {
+                        if (!button.classList.contains('non-changing-btn')) {
+                            button.className = 'btn rounded ' + style;
+                        }
+                    });
+                }
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("SaveLinkStyle", "SocTube")',
+                    data: { buttonStyle: selectedStyle },
+                    success: function (data) {
+                        alert("Pomyślnie zmieniono style dla linków");
+                    },
+                    error: function (error) {
+                        alert("Wystąpił błąd podczas zmiany styli" + data.Message);
+                    }
+                });
             });
-        }
-    </script>
+        });
+</script>

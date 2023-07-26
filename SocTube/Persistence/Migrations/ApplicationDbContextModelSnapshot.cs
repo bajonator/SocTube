@@ -233,12 +233,14 @@ namespace SocTube.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ProfileId")
                         .HasColumnType("int");
 
                     b.Property<string>("Url")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
@@ -263,6 +265,7 @@ namespace SocTube.Data.Migrations
                         .HasMaxLength(150);
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
@@ -273,6 +276,7 @@ namespace SocTube.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
@@ -423,7 +427,7 @@ namespace SocTube.Data.Migrations
 
             modelBuilder.Entity("SocTube.Core.Models.Domains.SocialMedia", b =>
                 {
-                    b.HasOne("SocTube.Core.Models.Domains.Profile", "Profile")
+                    b.HasOne("SocTube.Core.Models.Domains.Profile", null)
                         .WithMany("SocialMedia")
                         .HasForeignKey("ProfileId");
                 });

@@ -17,9 +17,11 @@ namespace SocTube.Core.Models.Domains
         public string UserId { get; set; }
         [Display(Name = "Twoja Nazwa")]
         [MaxLength(50)]
+        [Required(ErrorMessage = "Pole jest wymagane")]
         public string UserName { get; set; }
         [Display(Name = "Twój Opis")]
         [MaxLength(250)]
+        [Required(ErrorMessage = "Pole jest wymagane")]
         public string Description { get; set; }
         [Display(Name = "Email Kontaktowy")]
         [MaxLength(150)]

@@ -31,6 +31,10 @@ namespace SocTube.Persistence.Repositories
         {
             return _context.Links.FirstOrDefault(x => x.UserId == userId);
         }
+        public Link GetActiveStyle(string userId)
+        {
+            return _context.Links.FirstOrDefault(x => x.UserId == userId && x.ButtonStyle != null);
+        }
         public IEnumerable<Settings> GetSettings()
         {
             return _context.Settings.ToList();
