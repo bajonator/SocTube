@@ -8,14 +8,14 @@
 
     <div class="border-light border-top border-left">
         <div class="row text-right justify-content-center mt-5">
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-4">
                 @if (Model.Id == 0)
                 {
-                    <h5>Dodawanie Linku</h5>
+                    <h5>Dodawanie innego linku</h5>
                 }
                 else
                 {
-                    <h5>Edycja Linku</h5>
+                    <h5>Edycja linku</h5>
                 }
             </div>
         </div>
@@ -51,34 +51,37 @@
                 Zapisz
             </button>
         </div>
-        <div class="d-flex justify-content-center">
+        @if (Model.Id == 0)
+        {
+            <div class="d-flex justify-content-center">
 
-            <div class="form-group border border-warning-subtle col-md-8 mt-5 ml-2">
-                <label for="ButtonStyle">
-                    Wybierz styl dla linków: <br>
-                    <small class="text-danger">*Uwaga: Po kliknieciu wszystkie linki zaktualizuja swoj styl</small>
-                </label>
+                <div class="form-group border border-warning-subtle col-md-8 mt-5 ml-2">
+                    <label for="ButtonStyle">
+                        Wybierz styl dla linków: <br>
+                        <small class="text-danger">*Uwaga: Po kliknieciu wszystkie linki zaktualizuja swoj styl</small>
+                    </label>
 
-                <div class="btn-group d-flex flex-wrap mt-3">
-                    <button type="button" class="btn rounded btn-sm btn-primary btn-preview ml-1 non-changing-btn" data-style="btn-primary">Primary</button>
-                    <button type="button" class="btn rounded btn-sm btn-secondary btn-preview ml-1 non-changing-btn" data-style="btn-secondary">Secondary</button>
-                    <button type="button" class="btn rounded btn-sm btn-success btn-preview ml-1 non-changing-btn" data-style="btn-success">Success</button>
-                    <button type="button" class="btn rounded btn-sm btn-danger btn-preview ml-1 non-changing-btn" data-style="btn-danger">Danger</button>
-                    <button type="button" class="btn rounded btn-sm btn-warning btn-preview ml-1 non-changing-btn" data-style="btn-warning">Warning</button>
-                    <button type="button" class="btn rounded btn-sm btn-info btn-preview ml-1 non-changing-btn" data-style="btn-info">Info</button>
-                    <button type="button" class="btn rounded btn-sm btn-light btn-preview ml-1 non-changing-btn" data-style="btn-light">Light</button>
-               </div>
-                <div class="btn-group d-flex flex-wrap mt-1 mb-2">
-                    <button type="button" class="btn rounded btn-sm btn-outline-primary btn-preview ml-1 non-changing-btn" data-style="btn-outline-primary">Primary</button>
-                    <button type="button" class="btn rounded btn-sm btn-outline-secondary btn-preview ml-1 non-changing-btn" data-style="btn-outline-secondary">Secondary</button>
-                    <button type="button" class="btn rounded btn-sm btn-outline-success btn-preview ml-1 non-changing-btn" data-style="btn-outline-success">Success</button>
-                    <button type="button" class="btn rounded btn-sm btn-outline-danger btn-preview ml-1 non-changing-btn" data-style="btn-outline-danger">Danger</button>
-                    <button type="button" class="btn rounded btn-sm btn-outline-warning btn-preview ml-1 non-changing-btn" data-style="btn-outline-warning">Warning</button>
-                    <button type="button" class="btn rounded btn-sm btn-outline-info btn-preview ml-1 non-changing-btn" data-style="btn-outline-info">Info</button>
-                    <button type="button" class="btn rounded btn-sm btn-outline-light btn-preview ml-1 non-changing-btn" data-style="btn-outline-light">Light</button>
-              </div>
-                @Html.HiddenFor(x => x.ButtonStyle, new { id = "HiddenButtonStyle" })
+                    <div class="btn-group d-flex flex-wrap mt-3">
+                        <button type="button" class="btn rounded btn-sm btn-primary btn-preview ml-1 non-changing-btn" data-style="btn-primary">Primary</button>
+                        <button type="button" class="btn rounded btn-sm btn-secondary btn-preview ml-1 non-changing-btn" data-style="btn-secondary">Secondary</button>
+                        <button type="button" class="btn rounded btn-sm btn-success btn-preview ml-1 non-changing-btn" data-style="btn-success">Success</button>
+                        <button type="button" class="btn rounded btn-sm btn-danger btn-preview ml-1 non-changing-btn" data-style="btn-danger">Danger</button>
+                        <button type="button" class="btn rounded btn-sm btn-warning btn-preview ml-1 non-changing-btn" data-style="btn-warning">Warning</button>
+                        <button type="button" class="btn rounded btn-sm btn-info btn-preview ml-1 non-changing-btn" data-style="btn-info">Info</button>
+                        <button type="button" class="btn rounded btn-sm btn-light btn-preview ml-1 non-changing-btn" data-style="btn-light">Light</button>
+                    </div>
+                    <div class="btn-group d-flex flex-wrap mt-1 mb-2">
+                        <button type="button" class="btn rounded btn-sm btn-outline-primary btn-preview ml-1 non-changing-btn" data-style="btn-outline-primary">Primary</button>
+                        <button type="button" class="btn rounded btn-sm btn-outline-secondary btn-preview ml-1 non-changing-btn" data-style="btn-outline-secondary">Secondary</button>
+                        <button type="button" class="btn rounded btn-sm btn-outline-success btn-preview ml-1 non-changing-btn" data-style="btn-outline-success">Success</button>
+                        <button type="button" class="btn rounded btn-sm btn-outline-danger btn-preview ml-1 non-changing-btn" data-style="btn-outline-danger">Danger</button>
+                        <button type="button" class="btn rounded btn-sm btn-outline-warning btn-preview ml-1 non-changing-btn" data-style="btn-outline-warning">Warning</button>
+                        <button type="button" class="btn rounded btn-sm btn-outline-info btn-preview ml-1 non-changing-btn" data-style="btn-outline-info">Info</button>
+                        <button type="button" class="btn rounded btn-sm btn-outline-light btn-preview ml-1 non-changing-btn" data-style="btn-outline-light">Light</button>
+                    </div>
+                    @Html.HiddenFor(x => x.ButtonStyle, new { id = "HiddenButtonStyle" })
+                </div>
             </div>
-        </div>
+        }
     </div>
 }

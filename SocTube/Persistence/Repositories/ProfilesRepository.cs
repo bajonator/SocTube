@@ -56,7 +56,6 @@ namespace SocTube.Persistence.Repositories
         public void Add(Profile userProfile)
         {
             _context.Profiles.Add(userProfile);
-            _context.SaveChanges();
         }
 
         public void AddPhoto(Profile userProfile, IFormFile photo)
@@ -69,7 +68,6 @@ namespace SocTube.Persistence.Repositories
                     userProfile.ProfileImage = memoryStream.ToArray();
                 }
             }
-            _context.SaveChanges();
         }
         public void Update(Profile userProfile)
         {
@@ -81,20 +79,17 @@ namespace SocTube.Persistence.Repositories
                 existingProfile.Description = userProfile.Description;
                 existingProfile.ProfileImage = userProfile.ProfileImage;
                 existingProfile.SocialMedia = userProfile.SocialMedia;
-                _context.SaveChanges();
             }
         }
 
         public void AddSocial(SocialMedia socialMedia)
         {
             _context.SocialMedia.Add(socialMedia);
-            _context.SaveChanges();
         }
 
         public void AddLink(Link userLinks)
         { 
             _context.Links.Add(userLinks);
-            _context.SaveChanges();
         }
 
         public void UpdateLink(Link userLinks)
@@ -106,8 +101,6 @@ namespace SocTube.Persistence.Repositories
                 existingProfile.Name = userLinks.Name;
                 existingProfile.IsVisible = userLinks.IsVisible;
                 existingProfile.ButtonStyle = userLinks.ButtonStyle;
-
-                _context.SaveChanges();
             }
             else
             {
@@ -133,7 +126,6 @@ namespace SocTube.Persistence.Repositories
                 existingProfile.Twitch = socialMedia.Twitch;
                 existingProfile.Twitter = socialMedia.Twitter;
                 existingProfile.Github = socialMedia.Github;
-                _context.SaveChanges();
             }
             else
             {
@@ -155,7 +147,6 @@ namespace SocTube.Persistence.Repositories
         {
             var link = _context.Links.Find(linkId);
             _context.Links.Remove(link);
-            _context.SaveChanges();
         }
     }
 }

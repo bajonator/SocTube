@@ -22,19 +22,18 @@ namespace SocTube.Controllers
     [Authorize]
     public class SocTubeController : Controller
     {
-        private ProfilesRepository _profilesRepository;
+        private UnitOfWork _unitOfWork;
 
         public SocTubeController(ApplicationDbContext context)
         {
-            _profilesRepository = new ProfilesRepository(context);
-
+            _unitOfWork = new UnitOfWork(context);
         }
         public IActionResult Users()
         {
             var viewModel = new UsersViewModel
             {
-                UserProfiles = _profilesRepository.Get(),
-                UserSocialMedia = _profilesRepository.GetMedias()
+                UserProfiles = _unitOfWork.Profile.Get(),
+                UserSocialMedia = _unitOfWork.Profile.GetMedias()
             };
 
             return View("_UserList", viewModel);
@@ -42,15 +41,15 @@ namespace SocTube.Controllers
         public IActionResult Links()
         {
             var userId = User.GetUserId();
-            var media = _profilesRepository.GetUser(userId);
+            var media = _unitOfWork.Profile.GetUser(userId);
             var viewModel = new UsersViewModel
             {
-                UserProfiles = _profilesRepository.Get(),
-                UserLinks = _profilesRepository.GetLinks(userId),
-                UserSettings = _profilesRepository.GetSettings(),
+                UserProfiles = _unitOfWork.Profile.Get(),
+                UserLinks = _unitOfWork.Profile.GetLinks(userId),
+                UserSettings = _unitOfWork.Profile.GetSettings(),
             };
             if (media != null)
-                viewModel.UserSocialMedia = _profilesRepository.GetMedias();
+                viewModel.UserSocialMedia = _unitOfWork.Profile.GetMedias();
 
 
             return View("_UserLinks", viewModel);
@@ -61,21 +60,21 @@ namespace SocTube.Controllers
 
             var userInput = new UserViewModel
             {
-                UserProfile = _profilesRepository.GetUser(userId),
-                UserSocialMedia = _profilesRepository.GetSocialMedia(userId),
+                UserProfile = _unitOfWork.Profile.GetUser(userId),
+                UserSocialMedia = _unitOfWork.Profile.GetSocialMedia(userId),
                 UserLinks = new Link()
             };
             if (userInput.UserProfile != null)
-                userInput.UserProfile.SocialMedia = _profilesRepository.GetListMedia(userId);
+                userInput.UserProfile.SocialMedia = _unitOfWork.Profile.GetListMedia(userId);
             if (userInput.UserProfile != null)
-                userInput.UserProfile.Links = _profilesRepository.GetLinks(userId);
+                userInput.UserProfile.Links = _unitOfWork.Profile.GetLinks(userId);
 
             return View(userInput);
         }
         public IActionResult UserLinks()
         {
             var userId = User.GetUserId();
-            var media = _profilesRepository.GetUser(userId);
+            var media = _unitOfWork.Profile.GetUser(userId);
 
             var userInput = new UserViewModel
             {
@@ -94,12 +93,12 @@ namespace SocTube.Controllers
         {
             var userInput = new UserViewModel
             {
-                UserProfile = _profilesRepository.GetUserProfiles(userId),
+                UserProfile = _unitOfWork.Profile.GetUserProfiles(userId),
                 UserLinks = userLink,
-                UserSocialMedia = _profilesRepository.GetSocialMedia(userId)
+                UserSocialMedia = _unitOfWork.Profile.GetSocialMedia(userId)
             };
-            userInput.UserProfile.SocialMedia = _profilesRepository.GetListMedia(userId);
-            userInput.UserProfile.Links = _profilesRepository.GetLinks(userId);
+            userInput.UserProfile.SocialMedia = _unitOfWork.Profile.GetListMedia(userId);
+            userInput.UserProfile.Links = _unitOfWork.Profile.GetLinks(userId);
 
             return View(userInput);
         }
@@ -125,9 +124,10 @@ namespace SocTube.Controllers
                 };
 
                 if (model.Id > 0)
-                    _profilesRepository.Update(userProfile);
+                    _unitOfWork.Profile.Update(userProfile);
                 else
-                    _profilesRepository.Add(userProfile);
+                    _unitOfWork.Profile.Add(userProfile);
+                _unitOfWork.Complete();
 
                 return RedirectToAction("UserInput");
             }
@@ -138,7 +138,7 @@ namespace SocTube.Controllers
         public IActionResult SaveMedia(SocialMedia socialMedia)
         {
             var userId = User.GetUserId();
-            var profile = _profilesRepository.GetUser(userId);
+            var profile = _unitOfWork.Profile.GetUser(userId);
             
             ModelState.Remove("Profile.Id");
             if (ModelState.IsValid)
@@ -157,9 +157,10 @@ namespace SocTube.Controllers
                 };
 
                 if (profile.Id > 0)
-                    _profilesRepository.UpdateSocial(userSocialMedia, profile.Id);
+                    _unitOfWork.Profile.UpdateSocial(userSocialMedia, profile.Id);
                 else
-                    _profilesRepository.AddSocial(userSocialMedia);
+                    _unitOfWork.Profile.AddSocial(userSocialMedia);
+                _unitOfWork.Complete();
 
 
                 return RedirectToAction("UserInput");
@@ -172,7 +173,7 @@ namespace SocTube.Controllers
         {
             var userId = User.GetUserId();
             model.UserId = User.GetUserId();
-            var buttonStyle = _profilesRepository.GetActiveStyle(userId);
+            var buttonStyle = _unitOfWork.Profile.GetActiveStyle(userId);
 
             ModelState.Remove("Id");
 
@@ -195,9 +196,10 @@ namespace SocTube.Controllers
                 model.ButtonStyle = buttonStyle.ButtonStyle;
             }
             if (model.Id == 0)
-                _profilesRepository.AddLink(model);
+                _unitOfWork.Profile.AddLink(model);
             else
-                _profilesRepository.UpdateLink(model);
+                _unitOfWork.Profile.UpdateLink(model);
+            _unitOfWork.Complete();
 
             return RedirectToAction("UserInput");
         }
@@ -205,14 +207,15 @@ namespace SocTube.Controllers
         public IActionResult SaveLinkStyle(Link model)
         {
             var userId = User.GetUserId();
-            var userLinks = _profilesRepository.GetLinks(userId);
+            var userLinks = _unitOfWork.Profile.GetLinks(userId);
             try
             {
                 foreach (var link in userLinks)
                 {
                     link.ButtonStyle = model.ButtonStyle;
-                    _profilesRepository.UpdateLink(link);
+                    _unitOfWork.Profile.UpdateLink(link);
                 }
+                _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
@@ -226,8 +229,8 @@ namespace SocTube.Controllers
         public ActionResult EditLink(int linkId)
         {
             var userId = User.GetUserId();
-            var link = _profilesRepository.FindLink(linkId);
-            var buttonStyle = _profilesRepository.GetActiveStyle(userId);
+            var link = _unitOfWork.Profile.FindLink(linkId);
+            var buttonStyle = _unitOfWork.Profile.GetActiveStyle(userId);
             var linkmodel = new Link
             {
                 Id = linkId,
@@ -246,7 +249,8 @@ namespace SocTube.Controllers
             try
             {
                 var userId = User.GetUserId();
-                _profilesRepository.DeleteLink(id, userId);
+                _unitOfWork.Profile.DeleteLink(id, userId);
+                _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
@@ -257,13 +261,14 @@ namespace SocTube.Controllers
         private void SavePicture(Profile model, IFormFile profilePicture, string userId)
         {
             if (model.ProfileImage == null && profilePicture != null)
-                _profilesRepository.AddPhoto(model, profilePicture);
+                _unitOfWork.Profile.AddPhoto(model, profilePicture);
             else
             {
-                var existingProfile = _profilesRepository.GetUser(userId);
+                var existingProfile = _unitOfWork.Profile.GetUser(userId);
                 if (existingProfile != null)
                     model.ProfileImage = existingProfile.ProfileImage;
             }
+            _unitOfWork.Complete();
         }
     }
 }
