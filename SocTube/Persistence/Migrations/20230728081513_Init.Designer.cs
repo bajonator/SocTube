@@ -10,7 +10,7 @@ using SocTube.Persistence;
 namespace SocTube.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230723004120_Init")]
+    [Migration("20230728081513_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -291,29 +291,6 @@ namespace SocTube.Data.Migrations
                     b.ToTable("Profiles");
                 });
 
-            modelBuilder.Entity("SocTube.Core.Models.Domains.Settings", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("LinkId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LinksTheme")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Settings");
-                });
-
             modelBuilder.Entity("SocTube.Core.Models.Domains.SocialMedia", b =>
                 {
                     b.Property<int>("Id")
@@ -418,13 +395,6 @@ namespace SocTube.Data.Migrations
                     b.HasOne("SocTube.Core.Models.Domains.ApplicationUser", "User")
                         .WithOne("Profile")
                         .HasForeignKey("SocTube.Core.Models.Domains.Profile", "UserId");
-                });
-
-            modelBuilder.Entity("SocTube.Core.Models.Domains.Settings", b =>
-                {
-                    b.HasOne("SocTube.Core.Models.Domains.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("SocTube.Core.Models.Domains.SocialMedia", b =>

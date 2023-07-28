@@ -31,27 +31,6 @@ namespace SocTube.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Settings",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    LinkId = table.Column<int>(nullable: false),
-                    LinksTheme = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Settings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Settings_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Links",
                 columns: table => new
                 {
@@ -115,11 +94,6 @@ namespace SocTube.Data.Migrations
                 filter: "[UserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Settings_UserId",
-                table: "Settings",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SocialMedia_ProfileId",
                 table: "SocialMedia",
                 column: "ProfileId");
@@ -129,9 +103,6 @@ namespace SocTube.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Links");
-
-            migrationBuilder.DropTable(
-                name: "Settings");
 
             migrationBuilder.DropTable(
                 name: "SocialMedia");

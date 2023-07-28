@@ -46,6 +46,8 @@
     <Compile Remove="Persistence\Migrations\20230720174116_ButtonStyleAddedForLinkClass.Designer.cs" />
     <Compile Remove="Persistence\Migrations\20230722073635_Init.cs" />
     <Compile Remove="Persistence\Migrations\20230722073635_Init.Designer.cs" />
+    <Compile Remove="Persistence\Migrations\20230723004120_Init.cs" />
+    <Compile Remove="Persistence\Migrations\20230723004120_Init.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
