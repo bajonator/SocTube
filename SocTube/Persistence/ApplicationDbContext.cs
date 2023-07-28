@@ -14,7 +14,6 @@ namespace SocTube.Persistence
 
         public DbSet<Link> Links { get; set; }
         public DbSet<Profile> Profiles { get; set; }
-        public DbSet<Settings> Settings { get; set; }
         public DbSet<SocialMedia> SocialMedia { get; set; }
     }
 }

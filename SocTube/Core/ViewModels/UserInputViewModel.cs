@@ -9,7 +9,6 @@ namespace SocTube.Core.ViewModels
     {
         public Profile UserProfile { get; set; }
         public Link UserLinks { get; set; }
-        public IEnumerable<Settings> UserSettings { get; set; }
         public SocialMedia UserSocialMedia { get; set; }
     }
 }

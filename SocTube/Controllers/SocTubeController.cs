@@ -46,7 +46,6 @@ namespace SocTube.Controllers
             {
                 UserProfiles = _unitOfWork.Profile.Get(),
                 UserLinks = _unitOfWork.Profile.GetLinks(userId),
-                UserSettings = _unitOfWork.Profile.GetSettings(),
             };
             if (media != null)
                 viewModel.UserSocialMedia = _unitOfWork.Profile.GetMedias();
